@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My Web Proxy</title>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;display:grid;place-items:center;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:#0f172a;color:#f8fafc;padding:20px
+    }
+    .card{
+      width:min(680px,100%);padding:32px;border-radius:24px;
+      background:#1e293b;box-shadow:0 20px 60px #0005
+    }
+    h1{margin:0 0 8px;font-size:30px}
+    p{color:#cbd5e1}
+    form{display:flex;gap:10px;margin-top:24px}
+    input{
+      flex:1;min-width:0;padding:15px 16px;border:1px solid #475569;
+      border-radius:12px;background:#0f172a;color:white;font-size:16px
+    }
+    button{
+      padding:15px 22px;border:0;border-radius:12px;background:#38bdf8;
+      color:#082f49;font-weight:700;font-size:16px;cursor:pointer
+    }
+    button:active{transform:scale(.98)}
+    .note{font-size:13px;margin-top:18px}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>🌐 My Web Proxy</h1>
+    <p>自分で管理するプロキシサーバーへ接続します。</p>
+    <form id="form">
+      <input id="url" type="url" placeholder="https://example.com" autocomplete="url" required>
+      <button type="submit">開く</button>
+    </form>
+    <p class="note">※ 下の Worker URL を自分のプロキシに変更してください。</p>
+  </main>
+
+  <script>
+    // Cloudflare Worker のURLに変更
+    const PROXY = "https://YOUR-WORKER.workers.dev/";
+
+    document.getElementById("form").addEventListener("submit", e => {
+      e.preventDefault();
+      let url = document.getElementById("url").value.trim();
+      if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+      location.href = PROXY + "?url=" + encodeURIComponent(url);
+    });
+  </script>
+</body>
+</html>
